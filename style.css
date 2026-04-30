@@ -52,8 +52,7 @@ body {
 .hero.is-primary.is-bold {
     background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-emerald) 100%);
     color: white;
-    padding-top: 4rem;
-    padding-bottom: 6rem;
+    padding-bottom: 1rem;
     position: relative;
     overflow: hidden;
 }
@@ -278,7 +277,7 @@ body {
 
 .button.is-primary {
     border-radius: 12px;
-    min-width: 180px;
+    min-width: 320px;
     background-color: var(--primary-emerald);
     color: white;
     box-shadow: 0 4px 14px 0 rgba(4, 106, 56, 0.39);
@@ -407,11 +406,6 @@ body {
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
-    .hero.is-primary.is-bold {
-        padding-top: 3rem;
-        padding-bottom: 5rem;
-    }
-
     .card-form {
         padding: 2rem 1.5rem;
         margin-top: -3rem;
@@ -509,4 +503,96 @@ body {
     50% {
         transform: scale(1.1);
     }
+}
+/* Camera modal theme matching and mobile optimization */
+.camera-modal-card {
+    width: 400px;
+    max-width: 95vw;
+    background: var(--background, #fff);
+    color: var(--text, #222);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.camera-modal-head,
+.camera-modal-foot {
+    background: inherit;
+    color: inherit;
+}
+
+.camera-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: inherit;
+    padding: 1rem 0.5rem;
+}
+
+.camera-video {
+    border-radius: 8px;
+    background: var(--video-bg, #222);
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    aspect-ratio: 4/3;
+}
+
+.profile-photo-row {
+    gap: 0.5rem;
+}
+
+.take-photo-btn-mobile {
+    min-width: 120px;
+    font-size: 1.1rem;
+    padding: 0.75em 1.25em;
+}
+
+@media (max-width: 600px) {
+    .file.has-name .file-label {
+        width: 83%;
+    }
+
+    .camera-modal-card {
+        width: 98vw;
+        min-width: unset;
+        max-width: 98vw;
+    }
+
+    .camera-modal-body {
+        padding: 0.5rem 0.1rem;
+    }
+
+    .camera-video {
+        max-width: 98vw;
+        width: 98vw;
+        height: auto;
+    }
+
+    .profile-photo-row {
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .mb-2-mobile {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .take-photo-btn-mobile {
+        width: 100%;
+        min-width: unset;
+        font-size: 1.15rem;
+    }
+}
+
+html[data-theme='dark'] .camera-modal-card,
+body[data-theme='dark'] .camera-modal-card {
+    --background: #23272f;
+    --text: #f5f5f5;
+    --video-bg: #111;
+}
+
+html:not([data-theme='dark']) .camera-modal-card,
+body:not([data-theme='dark']) .camera-modal-card {
+    --background: #fff;
+    --text: #222;
+    --video-bg: #eee;
 }

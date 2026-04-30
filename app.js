@@ -15,6 +15,64 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbw6wDo6n8xsHBuQxUs6B2
     const clearPhotoBtn = document.getElementById('clearPhotoBtn');
     const themeToggleBtn = document.getElementById('themeToggleBtn');
     const themeIcon = document.getElementById('themeIcon');
+    // Camera elements
+    const takePhotoBtn = document.getElementById('takePhotoBtn');
+    const cameraModal = document.getElementById('cameraModal');
+    const closeCameraModal = document.getElementById('closeCameraModal');
+    const cameraStream = document.getElementById('cameraStream');
+    const cameraCanvas = document.getElementById('cameraCanvas');
+    const capturePhotoBtn = document.getElementById('capturePhotoBtn');
+    let cameraStreamObj = null;
+    // Camera modal logic
+    if (takePhotoBtn) {
+        takePhotoBtn.addEventListener('click', async () => {
+            cameraModal.classList.add('is-active');
+            // Start camera
+            try {
+                cameraStreamObj = await navigator.mediaDevices.getUserMedia({ video: true });
+                cameraStream.srcObject = cameraStreamObj;
+            } catch (err) {
+                showToast('Unable to access camera', 'error');
+                cameraModal.classList.remove('is-active');
+            }
+        });
+    }
+
+    if (closeCameraModal) {
+        closeCameraModal.addEventListener('click', () => {
+            cameraModal.classList.remove('is-active');
+            if (cameraStreamObj) {
+                cameraStreamObj.getTracks().forEach(track => track.stop());
+                cameraStreamObj = null;
+            }
+        });
+    }
+
+    if (capturePhotoBtn) {
+        capturePhotoBtn.addEventListener('click', () => {
+            // Draw video frame to canvas
+            cameraCanvas.getContext('2d').drawImage(cameraStream, 0, 0, cameraCanvas.width, cameraCanvas.height);
+            cameraCanvas.toBlob(blob => {
+                // Create a File object from the blob
+                const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                // Set as file input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+                // Show preview
+                fileNameSpan.textContent = file.name;
+                previewName.textContent = file.name;
+                previewImg.src = URL.createObjectURL(file);
+                previewArea.style.display = 'flex';
+            }, 'image/jpeg', 0.95);
+            // Close modal and stop camera
+            cameraModal.classList.remove('is-active');
+            if (cameraStreamObj) {
+                cameraStreamObj.getTracks().forEach(track => track.stop());
+                cameraStreamObj = null;
+            }
+        });
+    }
 
     // Theme Toggle Logic
     const savedTheme = localStorage.getItem('theme') || 'light';
@@ -133,15 +191,24 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbw6wDo6n8xsHBuQxUs6B2
         submitBtn.classList.add('is-loading');
 
         try {
+
+
             const data = {
                 fullName: form.fullName.value.trim(),
                 idNumber: form.idNumber.value.trim(),
+                cityName: form.cityName.value,
                 mobile: form.mobile.value.trim(),
                 bloodGroup: form.bloodGroup.value,
                 additionalInfo: form.additionalInfo.value.trim()
             };
 
-            if (!data.fullName || !data.idNumber || !data.mobile || !data.bloodGroup) {
+            // Prevent submission if cityName is not selected
+            if (!data.cityName) {
+                throw new Error('Please select a City Name');
+            }
+
+
+            if (!data.fullName || !data.idNumber || !data.cityName || !data.mobile || !data.bloodGroup) {
                 throw new Error('Please fill all required fields');
             }
 

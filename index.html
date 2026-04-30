@@ -59,6 +59,154 @@
                         </div>
                     </div>
 
+                    <!-- City Name -->
+                    <div class="column is-6 field">
+                        <label class="label required-star">City Name</label>
+                        <div class="control has-icons-left">
+                            <div class="select is-fullwidth">
+                                <select name="cityName" id="cityName" required>
+                                    <option value="" disabled selected>– Select city –</option>
+                                    <option value="Jeddah">Jeddah</option>
+                                    <option value="Makkah">Makkah</option>
+                                    <option value="Medina">Medina</option>
+                                    <option value="Dammam">Dammam</option>
+                                    <option value="Riyadh">Riyadh</option>
+                                    <option value="Tabuk">Tabuk</option>
+                                    <option value="Abha">Abha</option>
+                                    <option value="Taif">Taif</option>
+                                </select>
+                            </div>
+                            <span class="icon is-small is-left"><i class="fas fa-city"></i></span>
+                        </div>
+                    </div>
+
+                    <!-- Profile photo (required) -->
+                    <div class="column is-6 field">
+                        <label class="label required-star">Profile Photo</label>
+                        <div class="control is-flex is-align-items-center is-flex-wrap-wrap profile-photo-row">
+                            <div class="file has-name is-fullwidth mr-2 mb-2-mobile">
+                                <label class="file-label">
+                                    <input class="file-input" type="file" name="theFile" id="profilePhoto"
+                                        accept="image/jpeg, image/png, image/jpg, image/webp" required>
+                                    <span class="file-cta">
+                                        <span class="file-icon"><i class="fas fa-upload"></i></span>
+                                        <span class="file-label">Choose a photo…</span>
+                                    </span>
+                                    <span class="file-name" id="fileNameDisplay">No file selected</span>
+                                </label>
+                            </div>
+                            <button type="button" id="takePhotoBtn" class="button is-info is-light take-photo-btn-mobile" title="Take a photo with your camera">
+                                <span class="icon is-medium"><i class="fas fa-camera"></i></span>
+                                <span>Take Photo</span>
+                            </button>
+                        </div>
+                        <!-- Camera modal -->
+                        <div id="cameraModal" class="modal">
+                            <div class="modal-background"></div>
+                            <div class="modal-card camera-modal-card">
+                                <header class="modal-card-head camera-modal-head">
+                                    <p class="modal-card-title">Take a Photo</p>
+                                    <button class="delete" aria-label="close" id="closeCameraModal"></button>
+                                </header>
+                                <section class="modal-card-body camera-modal-body">
+                                    <video id="cameraStream" autoplay playsinline width="320" height="240" class="camera-video"></video>
+                                    <canvas id="cameraCanvas" width="320" height="240" style="display:none;"></canvas>
+                                </section>
+                                <footer class="modal-card-foot camera-modal-foot">
+                                    <button class="button is-primary is-large" id="capturePhotoBtn" style="width: 100%; max-width: 320px;">Capture</button>
+                                </footer>
+                            </div>
+                        </div>
+                        <style>
+                        /* Camera modal theme matching and mobile optimization */
+                        .camera-modal-card {
+                            width: 400px;
+                            max-width: 95vw;
+                            background: var(--background, #fff);
+                            color: var(--text, #222);
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                        }
+                        .camera-modal-head, .camera-modal-foot {
+                            background: inherit;
+                            color: inherit;
+                        }
+                        .camera-modal-body {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            background: inherit;
+                            padding: 1rem 0.5rem;
+                        }
+                        .camera-video {
+                            border-radius: 8px;
+                            background: var(--video-bg, #222);
+                            width: 100%;
+                            max-width: 320px;
+                            height: auto;
+                            aspect-ratio: 4/3;
+                        }
+                        .profile-photo-row {
+                            gap: 0.5rem;
+                        }
+                        .take-photo-btn-mobile {
+                            min-width: 120px;
+                            font-size: 1.1rem;
+                            padding: 0.75em 1.25em;
+                        }
+                        @media (max-width: 600px) {
+                            .file.has-name .file-label {
+                        width: 83%;
+                            }
+                            .camera-modal-card {
+                                width: 98vw;
+                                min-width: unset;
+                                max-width: 98vw;
+                            }
+                            .camera-modal-body {
+                                padding: 0.5rem 0.1rem;
+                            }
+                            .camera-video {
+                                max-width: 98vw;
+                                width: 98vw;
+                                height: auto;
+                            }
+                            .profile-photo-row {
+                                align-items: stretch;
+                                gap: 0.5rem;
+                            }
+                            .mb-2-mobile {
+                                margin-bottom: 0.5rem !important;
+                            }
+                            .take-photo-btn-mobile {
+                                width: 100%;
+                                min-width: unset;
+                                font-size: 1.15rem;
+                            }
+                        }
+                        html[data-theme='dark'] .camera-modal-card,
+                        body[data-theme='dark'] .camera-modal-card {
+                            --background: #23272f;
+                            --text: #f5f5f5;
+                            --video-bg: #111;
+                        }
+                        html:not([data-theme='dark']) .camera-modal-card,
+                        body:not([data-theme='dark']) .camera-modal-card {
+                            --background: #fff;
+                            --text: #222;
+                            --video-bg: #eee;
+                        }
+                        </style>
+                        <div id="previewArea" class="preview-container" style="display: none;">
+                            <img id="previewImg" class="image-preview" alt="Preview">
+                            <div>
+                                <p class="is-size-7 has-text-weight-semibold mb-2" id="previewName">filename.jpg</p>
+                                <button type="button" id="clearPhotoBtn" class="button is-small is-light"><i
+                                        class="fas fa-times mr-1"></i> Remove</button>
+                            </div>
+                        </div>
+                        <p class="help">JPEG, PNG, WEBP (max 5MB)</p>
+                    </div>
+
                     <!-- Mobile -->
                     <div class="column is-6 field">
                         <label class="label required-star">Mobile Number</label>
@@ -90,33 +238,6 @@
                             <span class="icon is-small is-left"><i class="fas fa-tint"></i></span>
                         </div>
                     </div>
-                </div>
-
-                <!-- Profile photo (optional) -->
-                <div class="field mt-2">
-                    <label class="label">Profile Photo</label>
-                    <div class="control">
-                        <div class="file has-name is-fullwidth">
-                            <label class="file-label">
-                                <input class="file-input" type="file" name="theFile" id="profilePhoto"
-                                    accept="image/jpeg, image/png, image/jpg, image/webp" required>
-                                <span class="file-cta">
-                                    <span class="file-icon"><i class="fas fa-camera"></i></span>
-                                    <span class="file-label">Choose a photo…</span>
-                                </span>
-                                <span class="file-name" id="fileNameDisplay">No file selected</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div id="previewArea" class="preview-container" style="display: none;">
-                        <img id="previewImg" class="image-preview" alt="Preview">
-                        <div>
-                            <p class="is-size-7 has-text-weight-semibold mb-2" id="previewName">filename.jpg</p>
-                            <button type="button" id="clearPhotoBtn" class="button is-small is-light"><i
-                                    class="fas fa-times mr-1"></i> Remove</button>
-                        </div>
-                    </div>
-                    <p class="help">JPEG, PNG, WEBP (max 5MB)</p>
                 </div>
 
                 <!-- Additional information -->
