@@ -1,6 +1,7 @@
 // ======================  IMPORTANT  ======================
 // REPLACE THIS URL WITH YOUR DEPLOYED APPS SCRIPT WEB APP URL
-const scriptURL = "https://script.google.com/macros/s/AKfycbw6wDo6n8xsHBuQxUs6B2ceLsY5lx-o9jWdvgS2AVmPv0nXOW7tLD87UagDExecRDo6BQ/exec";
+const scriptURL =
+  "https://script.google.com/macros/s/AKfycbyv7WZ0E9KDYqpBkVDao1Loh13lF5lxMonPkbRApTye1WoOkzF7QmIzVJtdRg1e15_MPQ/exec";
 // ========================================================
 
 (function () {
