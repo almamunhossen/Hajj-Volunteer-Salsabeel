@@ -402,10 +402,21 @@ body {
     max-width: 900px;
     margin: 0 auto;
     padding: 0 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 0.5rem 2rem;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        justify-content: center;
+    }
     .card-form {
         padding: 2rem 1.5rem;
         margin-top: -3rem;
